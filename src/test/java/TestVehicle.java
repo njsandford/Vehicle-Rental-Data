@@ -45,4 +45,18 @@ public class TestVehicle {
         Assert.assertFalse(vehicleOne.equals(vehicleTwo));
         Assert.assertFalse(vehicleTwo.equals(vehicleOne));
     }
+
+    @Test
+    public void toStringShouldReturnVehicleDetails() {
+        String sipp = "CDMR";
+        String name = "Ford Focus";
+        double price = 157.85;
+        String supplier = "Hertz";
+        double rating = 8.9;
+
+        String expected = "[" + sipp + ", " + name + ", " + price + ", " + supplier + ", " + rating + "]";
+        Vehicle vehicle = new Vehicle(sipp, name, price, supplier, rating);
+
+        Assert.assertEquals(expected, vehicle.toString());
+    }
 }

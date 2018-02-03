@@ -61,6 +61,11 @@ public class Vehicle {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "[" + getSipp() + ", " + getName() + ", " + getPrice() + ", " + getSupplier() + ", " + getRating() + "]";
+    }
+
     /**
      * @return Four letter SIPP code.
      */
