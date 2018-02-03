@@ -1,5 +1,10 @@
 package vehicles;
 
+/**
+ * @Author Natalie Sandford
+ * @Date 02/02/2018
+ * Provides a vehicle model with rental information information: name, SIPP, supplier, price and rating.
+ */
 public class Vehicle {
 
     // Private class variables
@@ -7,12 +12,11 @@ public class Vehicle {
     private double price, rating;
 
     /**
-     * Create a vehicle object.
-     * @param sipp
-     * @param name
-     * @param price
-     * @param supplier
-     * @param rating
+     * @param sipp Four letter SIPP code.
+     * @param name Name of vehicle, e.g. "Ford Focus".
+     * @param price Rental price of the vehicle in GBP.
+     * @param supplier Name of the vehicle supplier, e.g. "Hertz".
+     * @param rating Supplier's rating out of 10.
      */
     public Vehicle(String sipp, String name, double price, String supplier, double rating) {
         setSipp(sipp);
@@ -23,80 +27,105 @@ public class Vehicle {
     }
 
     /**
-     * Get the SIPP of the vehicle.
-     * @return The vehicle's SIPP.
+     * @param o Vehicle to compare with.
+     * @return boolean Checking if the object o is also a Vehicle and has the same name, SIPP code, price, supplier and rating.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vehicle vehicle = (Vehicle) o;
+
+        if (Double.compare(vehicle.price, price) != 0) return false;
+        if (Double.compare(vehicle.rating, rating) != 0) return false;
+        if (!sipp.equals(vehicle.sipp)) return false;
+        if (!name.equals(vehicle.name)) return false;
+        return supplier.equals(vehicle.supplier);
+    }
+
+    /**
+     * @return hashcode for the current vehicle based on name, SIPP code, price, supplier and rating.
+     */
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = sipp.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + supplier.hashCode();
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(rating);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    /**
+     * @return Four letter SIPP code.
      */
     public String getSipp() {
         return this.sipp;
     }
 
     /**
-     * Set the SIPP of the vehicle.
-     * @param sipp
+     * @param sipp Must be a valid four letter SIPP code, e.g. "CDMR".
      */
     private void setSipp(String sipp) {
         this.sipp = sipp;
     }
 
     /**
-     * Get the name of the vehicle.
-     * @return The name of the vehicle.
+     * @return Name of the vehicle.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Set the name of the vehicle.
-     * @param name
+     * @param name Name of vehicle, e.g. "Ford Focus".
      */
     private void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Get the price of renting the vehicle.
-     * @return The price of renting the vehicle.
+     * @return Price of renting the vehicle in GBP.
      */
     public double getPrice() {
         return this.price;
     }
 
     /**
-     * Set the price of renting the vehicle.
-     * @param price
+     * @param price Must be greater than or equal to 0.
      */
     private void setPrice(double price) {
         this.price = price;
     }
 
     /**
-     * Get the supplier of the vehicle.
-     * @return The supplier of the vehicle.
+     * @return Supplier of the vehicle.
      */
     public String getSupplier() {
         return this.supplier;
     }
 
     /**
-     * Set the supplier of the vehicle.
-     * @param supplier
+     * @param supplier Name of the supplier, e.g. "Hertz".
      */
     private void setSupplier(String supplier) {
         this.supplier = supplier;
     }
 
     /**
-     * Get the rating of the supplier.
-     * @return The rating of the supplier.
+     * @return Rating of the supplier.
      */
     public double getRating() {
         return this.rating;
     }
 
     /**
-     * Set the rating of the supplier.
-     * @param rating
+     * @param rating Must be between 0 and 10.
      */
     private void setRating(double rating) {
         this.rating = rating;
