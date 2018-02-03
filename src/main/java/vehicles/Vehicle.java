@@ -1,5 +1,7 @@
 package vehicles;
 
+import java.util.Comparator;
+
 /**
  * @Author Natalie Sandford
  * @Date 02/02/2018
@@ -65,6 +67,63 @@ public class Vehicle {
     public String toString() {
         return "[" + getSipp() + ", " + getName() + ", " + getPrice() + ", " + getSupplier() + ", " + getRating() + "]";
     }
+
+    /**
+     * Comparator to sort vehicles by price in ascending order.
+     */
+    public static Comparator<Vehicle> PriceAscending = new Comparator<Vehicle>() {
+
+        public int compare(Vehicle lhs, Vehicle rhs) {
+            double lhsPrice = lhs.getPrice();
+            double rhsPrice = rhs.getPrice();
+
+            // Ascending order
+            return (int) (lhsPrice - rhsPrice);
+        }
+    };
+
+    /**
+     * Comparator to sort vehicles by price in descending order.
+     */
+    public static Comparator<Vehicle> PriceDescending = new Comparator<Vehicle>() {
+
+        public int compare(Vehicle lhs, Vehicle rhs) {
+            double lhsPrice = lhs.getPrice();
+            double rhsPrice = rhs.getPrice();
+
+            // Descending order
+            return (int) (rhsPrice - lhsPrice);
+        }
+    };
+
+    /**
+     * Comparator to sort vehicles by supplier rating in ascending order.
+     */
+    public static Comparator<Vehicle> RatingAscending = new Comparator<Vehicle>() {
+
+        public int compare(Vehicle lhs, Vehicle rhs) {
+            double lhsRating = lhs.getRating();
+            double rhsRating = rhs.getRating();
+
+            // Ascending order
+            return (int) ((lhsRating - rhsRating) * 10);
+        }
+    };
+
+    /**
+     * Comparator to sort vehicles by supplier rating in descending order.
+     */
+    public static Comparator<Vehicle> RatingDescending = new Comparator<Vehicle>() {
+
+        public int compare(Vehicle lhs, Vehicle rhs) {
+            double lhsRating = lhs.getRating();
+            double rhsRating = rhs.getRating();
+
+            // Descending order
+            return (int) ((rhsRating - lhsRating) * 10);
+        }
+    };
+
 
     /**
      * @return Four letter SIPP code.

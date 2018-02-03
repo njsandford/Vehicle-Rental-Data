@@ -1,6 +1,15 @@
 import org.junit.*;
+import utilities.ParseFile;
 import vehicles.Vehicle;
 
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * @Author: Natalie Sandford
+ * @Date: 03/02/2018
+ * Provides test coverage for the Vehicle class.
+ */
 public class TestVehicle {
 
     @Test
@@ -58,5 +67,73 @@ public class TestVehicle {
         Vehicle vehicle = new Vehicle(sipp, name, price, supplier, rating);
 
         Assert.assertEquals(expected, vehicle.toString());
+    }
+
+    @Test
+    public void comparatorShouldSortByPriceAscending() {
+        ParseFile pf = new ParseFile();
+        List<Vehicle> vehicleList = pf.jsonToVehicleList("vehicles.json");
+        Collections.sort(vehicleList, Vehicle.PriceAscending);
+
+        double previousPrice = 0;
+        double currentPrice;
+
+        // Assert true that for every vehicle, the rating is greater than or equal to the previous price.
+        for (Vehicle vehicle : vehicleList) {
+            currentPrice = vehicle.getPrice();
+            Assert.assertTrue(currentPrice >= previousPrice);
+            previousPrice = currentPrice;
+        }
+    }
+
+    @Test
+    public void comparatorShouldSortByPriceDescending() {
+        ParseFile pf = new ParseFile();
+        List<Vehicle> vehicleList = pf.jsonToVehicleList("vehicles.json");
+        Collections.sort(vehicleList, Vehicle.PriceDescending);
+
+        double previousPrice = 1000;
+        double currentPrice;
+
+        // Assert true that for every vehicle, the rating is less than or equal to the previous price.
+        for (Vehicle vehicle : vehicleList) {
+            currentPrice = vehicle.getPrice();
+            Assert.assertTrue(currentPrice <= previousPrice);
+            previousPrice = currentPrice;
+        }
+    }
+
+    @Test
+    public void comparatorShouldSortByRatingAscending() {
+        ParseFile pf = new ParseFile();
+        List<Vehicle> vehicleList = pf.jsonToVehicleList("vehicles.json");
+        Collections.sort(vehicleList, Vehicle.RatingAscending);
+
+        double previousRating = 0;
+        double currentRating;
+
+        // Assert true that for every vehicle, the rating is greater than or equal to the previous rating.
+        for (Vehicle vehicle : vehicleList) {
+            currentRating = vehicle.getRating();
+            Assert.assertTrue(currentRating >= previousRating);
+            previousRating = currentRating;
+        }
+    }
+
+    @Test
+    public void comparatorShouldSortByRatingDescending() {
+        ParseFile pf = new ParseFile();
+        List<Vehicle> vehicleList = pf.jsonToVehicleList("vehicles.json");
+        Collections.sort(vehicleList, Vehicle.RatingDescending);
+
+        double previousRating = 10;
+        double currentRating;
+
+        // Assert true that for every vehicle, the rating is less than or equal to the previous rating.
+        for (Vehicle vehicle : vehicleList) {
+            currentRating = vehicle.getRating();
+            Assert.assertTrue(currentRating <= previousRating);
+            previousRating = currentRating;
+        }
     }
 }
