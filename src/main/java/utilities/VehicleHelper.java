@@ -3,6 +3,8 @@ package utilities;
 import vehicles.Vehicle;
 import vehicles.VehicleSpecification;
 
+import java.util.*;
+
 /**
  * @Author: Natalie Sandford
  * @Date: 03/02/2018
@@ -16,5 +18,30 @@ public class VehicleHelper {
      */
     public VehicleSpecification getVehicleSpecification(Vehicle vehicle) {
         return new VehicleSpecification(vehicle.getSipp());
+    }
+
+    /**
+     * @param vehicleList List of all vehicles.
+     * @return The highest rated suppliers per car type in descending order.
+     */
+    public List<Vehicle> getHighestRatedPerCarTypeDescending(List<Vehicle> vehicleList) {
+        // First sort the vehicles by rating in descending order for more efficient searching of highest rating per car type.
+        Collections.sort(vehicleList, Vehicle.RatingDescending);
+        List<Vehicle> highestRated = new ArrayList<Vehicle>();
+
+        // Add car type character to a list to keep track of which types have been added to the final list.
+        List<Character> carTypes = new ArrayList<Character>();
+        for (Vehicle vehicle : vehicleList) {
+            char carType = vehicle.getSipp().charAt(0);
+            // If the car types list already contains the current car type, then don't add to list.
+            if (!carTypes.contains(carType)) {
+                // Add car type to car types list:
+                carTypes.add(carType);
+                // Add vehicle to final list:
+                highestRated.add(vehicle);
+            }
+        }
+        // Return already sorted list:
+        return highestRated;
     }
 }

@@ -21,11 +21,12 @@ public class PrintToConsole {
         PrintToConsole printToConsole = new PrintToConsole();
         printToConsole.vehiclesPriceAscending();
         printToConsole.vehicleSpecifications();
+        printToConsole.highestRatedPerTypeDescending();
     }
 
     /**
      * Print a list of all vehicles ordered by price in ascending order in the format:
-     *      {name} - {price}.
+     *      {name} - {price}
      */
     public void vehiclesPriceAscending() {
         List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
@@ -39,7 +40,7 @@ public class PrintToConsole {
 
     /**
      * Print a list of all vehicles with their full specification in the format:
-     *      {name} - {sipp} - {type} - {doors} - {transmission} - {fuel} - {air con}.
+     *      {name} - {sipp} - {type} - {doors} - {transmission} - {fuel} - {air con}
      */
     public void vehicleSpecifications() {
         List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
@@ -52,5 +53,22 @@ public class PrintToConsole {
                     spec.getDoors() + " - " + spec.getTransmission() + " - " + spec.getFuel() + " - " + spec.getAirCon());
         }
         System.out.println("--- End of specifications ---");
+    }
+
+    /**
+     * Print a list of the highest rated suppliers per car type in descending order in the format:
+     *      {name} - {type} - {supplier} - {rating}
+     */
+    public void highestRatedPerTypeDescending() {
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        ParseFile parseFile = new ParseFile();
+        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+        List<Vehicle> vehicles = vehicleHelper.getHighestRatedPerCarTypeDescending(vehicleList);
+        System.out.println("--- Highest rated supplier per car type, descending order: ---");
+        for (Vehicle vehicle : vehicles) {
+            VehicleSpecification spec = vehicleHelper.getVehicleSpecification(vehicle);
+            System.out.println(vehicle.getName() + " - " + spec.getCarType() + " - " + vehicle.getSupplier() + " - " + vehicle.getRating());
+        }
+        System.out.println("--- End of highest rated suppliers per car type ---");
     }
 }

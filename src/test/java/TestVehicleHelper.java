@@ -1,7 +1,10 @@
 import org.junit.*;
+import utilities.ParseFile;
 import utilities.VehicleHelper;
 import vehicles.Vehicle;
 import vehicles.VehicleSpecification;
+
+import java.util.List;
 
 /**
  * @Author: Natalie Sandford
@@ -20,5 +23,14 @@ public class TestVehicleHelper {
         Assert.assertEquals("Manual", spec.getTransmission());
         Assert.assertEquals("Petrol", spec.getFuel());
         Assert.assertEquals("AC", spec.getAirCon());
+    }
+
+    @Test
+    public void shouldGetHighestRatedPerType() {
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        ParseFile parseFile = new ParseFile();
+        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+        List<Vehicle> vehicles = vehicleHelper.getHighestRatedPerCarTypeDescending(vehicleList);
+        Assert.assertEquals(6, vehicles.size());
     }
 }
