@@ -1,6 +1,7 @@
 package utilities;
 
 import vehicles.Vehicle;
+import vehicles.VehicleScore;
 import vehicles.VehicleSpecification;
 
 import java.util.*;
@@ -62,5 +63,49 @@ public class VehicleHelper {
         // If the vehicle has air conditioning, increment the score by 2.
         if (sipp.charAt(3) == 'R') { score += 2; }
         return score;
+    }
+
+    /**
+     * @param vehicleList List of all vehicles to calculate score for.
+     * @return List of VehicleScore objects.
+     */
+    public List<VehicleScore> getVehicleScores(List<Vehicle> vehicleList) {
+        List<VehicleScore> scores = new ArrayList<VehicleScore>();
+
+        VehicleScore vehicleScore;
+        for (Vehicle vehicle : vehicleList) {
+            int score = calculateScore(vehicle);
+            double totalScore = score + vehicle.getRating();
+            vehicleScore = new VehicleScore(vehicle, score, totalScore);
+            scores.add(vehicleScore);
+        }
+
+        return scores;
+    }
+
+    /**
+     * @param vehicleList List of all vehicles to calculate score for.
+     * @return List of VehicleScore objects sorted in descending order.
+     */
+    public List<VehicleScore> getVehicleScoresDescending(List<Vehicle> vehicleList) {
+        List<VehicleScore> scores = getVehicleScores(vehicleList);
+
+        // Sort by total score descending:
+        Collections.sort(scores, VehicleScore.TotalScoreDescending);
+
+        return scores;
+    }
+
+    /**
+     * @param vehicleList List of all vehicles to calculate score for.
+     * @return List of VehicleScore objects sorted in ascending order.
+     */
+    public List<VehicleScore> getVehicleScoresAscending(List<Vehicle> vehicleList) {
+        List<VehicleScore> scores = getVehicleScores(vehicleList);
+
+        // Sort by total score ascending:
+        Collections.sort(scores, VehicleScore.TotalScoreAscending);
+
+        return scores;
     }
 }

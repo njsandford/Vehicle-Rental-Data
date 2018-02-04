@@ -3,8 +3,10 @@ package run;
 import utilities.ParseFile;
 import utilities.VehicleHelper;
 import vehicles.Vehicle;
+import vehicles.VehicleScore;
 import vehicles.VehicleSpecification;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,18 +21,23 @@ public class PrintToConsole {
 
     public static void main(String[] args) {
         PrintToConsole printToConsole = new PrintToConsole();
-        printToConsole.vehiclesPriceAscending();
-        printToConsole.vehicleSpecifications();
-        printToConsole.highestRatedPerTypeDescending();
+
+        ParseFile parseFile = new ParseFile();
+        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+
+        printToConsole.vehiclesPriceAscending(vehicleList);
+        printToConsole.vehicleSpecifications(vehicleList);
+        printToConsole.highestRatedPerTypeDescending(vehicleList);
+        printToConsole.vehicleScoresDescending(vehicleList);
     }
 
     /**
      * Print a list of all vehicles ordered by price in ascending order in the format:
      *      {name} - {price}
      */
-    public void vehiclesPriceAscending() {
-        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+    public void vehiclesPriceAscending(List<Vehicle> vehicleList) {
         Collections.sort(vehicleList, Vehicle.PriceAscending);
+
         System.out.println("--- All vehicles in ascending price order: ---");
         for (Vehicle vehicle : vehicleList) {
             System.out.println(vehicle.getName() + " - " + vehicle.getPrice());
@@ -42,10 +49,10 @@ public class PrintToConsole {
      * Print a list of all vehicles with their full specification in the format:
      *      {name} - {sipp} - {type} - {doors} - {transmission} - {fuel} - {air con}
      */
-    public void vehicleSpecifications() {
-        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+    public void vehicleSpecifications(List<Vehicle> vehicleList) {
         VehicleHelper vehicleHelper = new VehicleHelper();
         VehicleSpecification spec;
+
         System.out.println("--- Full specification of all vehicles: ---");
         for (Vehicle vehicle : vehicleList) {
             spec = vehicleHelper.getVehicleSpecification(vehicle);
@@ -59,16 +66,31 @@ public class PrintToConsole {
      * Print a list of the highest rated suppliers per car type in descending order in the format:
      *      {name} - {type} - {supplier} - {rating}
      */
-    public void highestRatedPerTypeDescending() {
+    public void highestRatedPerTypeDescending(List<Vehicle> vehicleList) {
         VehicleHelper vehicleHelper = new VehicleHelper();
-        ParseFile parseFile = new ParseFile();
-        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
         List<Vehicle> vehicles = vehicleHelper.getHighestRatedPerCarTypeDescending(vehicleList);
+
         System.out.println("--- Highest rated supplier per car type, descending order: ---");
         for (Vehicle vehicle : vehicles) {
             VehicleSpecification spec = vehicleHelper.getVehicleSpecification(vehicle);
             System.out.println(vehicle.getName() + " - " + spec.getCarType() + " - " + vehicle.getSupplier() + " - " + vehicle.getRating());
         }
         System.out.println("--- End of highest rated suppliers per car type ---");
+    }
+
+    /**
+     * Print a list of all vehicle scores, sorted in descending order in the format:
+     *      {name} - {score} - {rating} - {totalScore}
+     */
+    public void vehicleScoresDescending(List<Vehicle> vehicleList) {
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        List<VehicleScore> scores = vehicleHelper.getVehicleScoresDescending(vehicleList);
+
+        System.out.println("--- Vehicle Scores: ---");
+        for (VehicleScore score : scores) {
+            Vehicle vehicle = score.getVehicle();
+            System.out.println(vehicle.getName() + " - " + score.getScore() + " - " + vehicle.getRating() + " - " + score.getTotalScore());
+        }
+        System.out.println("--- End of scores ---");
     }
 }

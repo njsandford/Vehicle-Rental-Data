@@ -2,6 +2,7 @@ import org.junit.*;
 import utilities.ParseFile;
 import utilities.VehicleHelper;
 import vehicles.Vehicle;
+import vehicles.VehicleScore;
 import vehicles.VehicleSpecification;
 
 import java.util.List;
@@ -51,5 +52,41 @@ public class TestVehicleHelper {
         Assert.assertEquals(3, scoreOne);
         Assert.assertEquals(7, scoreTwo);
         Assert.assertEquals(1, scoreThree);
+    }
+
+    @Test
+    public void shouldGetScoresInDescendingOrder() {
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        ParseFile parseFile = new ParseFile();
+        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+        List<VehicleScore> scores = vehicleHelper.getVehicleScoresDescending(vehicleList);
+
+        double previousScore = 100;
+        double currentScore;
+
+        // Assert true that for every vehicle score, the current score is less than or equal to the previous score.
+        for (VehicleScore score : scores) {
+            currentScore = score.getTotalScore();
+            Assert.assertTrue(currentScore <= previousScore);
+            previousScore = currentScore;
+        }
+    }
+
+    @Test
+    public void shouldGetScoresInAscendingOrder() {
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        ParseFile parseFile = new ParseFile();
+        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+        List<VehicleScore> scores = vehicleHelper.getVehicleScoresAscending(vehicleList);
+
+        double previousScore = 0;
+        double currentScore;
+
+        // Assert true that for every vehicle score, the current score is greater than or equal to the previous score.
+        for (VehicleScore score : scores) {
+            currentScore = score.getTotalScore();
+            Assert.assertTrue(currentScore >= previousScore);
+            previousScore = currentScore;
+        }
     }
 }

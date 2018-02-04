@@ -17,6 +17,4 @@ public class TestParseFile {
         List<Vehicle> vehicleList = pf.jsonToVehicleList("vehicles.json");
         Assert.assertEquals(31, vehicleList.size());
     }
-
-
 }

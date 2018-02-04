@@ -91,8 +91,8 @@ public class Vehicle {
             double lhsPrice = lhs.getPrice();
             double rhsPrice = rhs.getPrice();
 
-            // Descending order
-            return (int) (rhsPrice - lhsPrice);
+            // Descending order (multiply by 10 to ensure decimal value is not lost when converted to integer).
+            return (int) ((rhsPrice - lhsPrice) * 10);
         }
     };
 
@@ -105,7 +105,7 @@ public class Vehicle {
             double lhsRating = lhs.getRating();
             double rhsRating = rhs.getRating();
 
-            // Ascending order
+            // Ascending order (multiply by 10 to ensure decimal value is not lost when converted to integer).
             return (int) ((lhsRating - rhsRating) * 10);
         }
     };
