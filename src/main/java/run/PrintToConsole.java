@@ -18,6 +18,9 @@ public class PrintToConsole {
         printToConsole.vehiclesPriceAscending();
     }
 
+    /**
+     * Print a list of all vehicles ordered by price in ascending order in the format: {name} - {price}.
+     */
     public void vehiclesPriceAscending() {
         ParseFile parseFile = new ParseFile();
         List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");

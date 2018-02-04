@@ -1,5 +1,8 @@
 package utilities;
 
+import vehicles.Vehicle;
+import vehicles.VehicleSpecification;
+
 /**
  * @Author: Natalie Sandford
  * @Date: 03/02/2018
@@ -7,6 +10,11 @@ package utilities;
  */
 public class VehicleHelper {
 
-
-
+    /**
+     * @param vehicle Four letter SIPP code.
+     * @return Vehicle speicification object from four letter SIPP code.
+     */
+    public VehicleSpecification getVehicleSpecification(Vehicle vehicle) {
+        return new VehicleSpecification(vehicle.getSipp());
+    }
 }
