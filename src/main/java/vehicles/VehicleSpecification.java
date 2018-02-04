@@ -9,18 +9,17 @@ import java.util.Map;
  */
 public class VehicleSpecification {
 
-    private static Map<Character, String> typeMapping;
-    private static Map<Character, String> doorsMapping;
-    private static Map<Character, String> transmissionMapping;
-    private static Map<Character, String> fuelMapping;
-    private static Map<Character, String> airConMapping;
-
+    // Private class variables
     private String carType;
     private String doors;
     private String transmission;
     private String fuel;
     private String airCon;
 
+    /**
+     * SIPP code must be at least four letters in length to be able to calculate the specification.
+     * @param sipp
+     */
     public VehicleSpecification(String sipp) {
         if (sipp.length() >= 4) {
             setType(sipp.charAt(0));
@@ -30,33 +29,65 @@ public class VehicleSpecification {
         }
     }
 
+    /**
+     * @param typeChar Corresponding letter from the SIPP code that represents car type.
+     */
     private void setType(char typeChar) {
-        this.carType = CarType.valueOf(Character.toString(typeChar)).getValue();
+        try {
+            this.carType = CarType.valueOf(Character.toString(typeChar)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.carType = "Unknown";
+        }
     }
 
     public String getCarType() {
         return carType;
     }
 
+    /**
+     * @param doorChar Corresponding letter from the SIPP code that represents doors/car type.
+     */
     private void setDoors(char doorChar) {
-        this.doors = Doors.valueOf(Character.toString(doorChar)).getValue();
+        try {
+            this.doors = Doors.valueOf(Character.toString(doorChar)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.doors = "Unknown";
+        }
     }
 
     public String getDoors() {
         return doors;
     }
 
+    /**
+     * @param transmissionChar Corresponding letter from the SIPP code that represents transmission.
+     */
     private void setTransmission(char transmissionChar) {
-        this.transmission = Transmission.valueOf(Character.toString(transmissionChar)).getValue();
+        try {
+            this.transmission = Transmission.valueOf(Character.toString(transmissionChar)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.transmission = "Unknown";
+        }
     }
 
     public String getTransmission() {
         return transmission;
     }
 
+    /**
+     * @param fuelAndAirCon Corresponding letter from the SIPP code that represents fuel/air con.
+     */
     private void setFuelAndAirCon(char fuelAndAirCon) {
-        this.fuel = Fuel.valueOf(Character.toString(fuelAndAirCon)).getValue();
-        this.airCon = AirCon.valueOf(Character.toString(fuelAndAirCon)).getValue();
+        try {
+            this.fuel = Fuel.valueOf(Character.toString(fuelAndAirCon)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.fuel = "Unknown";
+        }
+        try {
+            this.airCon = AirCon.valueOf(Character.toString(fuelAndAirCon)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.airCon = "Unknown";
+        }
     }
 
     public String getFuel() {
@@ -72,7 +103,7 @@ public class VehicleSpecification {
 
         private final String value;
 
-        private CarType(String value) {
+        CarType(String value) {
             this.value = value;
         }
 
@@ -86,7 +117,7 @@ public class VehicleSpecification {
 
         private final String value;
 
-        private Doors(String value) {
+        Doors(String value) {
             this.value = value;
         }
 
@@ -100,7 +131,7 @@ public class VehicleSpecification {
 
         private final String value;
 
-        private Transmission(String value) {
+        Transmission(String value) {
             this.value = value;
         }
 
@@ -114,7 +145,7 @@ public class VehicleSpecification {
 
         private final String value;
 
-        private Fuel(String value) {
+        Fuel(String value) {
             this.value = value;
         }
 
@@ -128,7 +159,7 @@ public class VehicleSpecification {
 
         private final String value;
 
-        private AirCon(String value) {
+        AirCon(String value) {
             this.value = value;
         }
 
