@@ -44,4 +44,23 @@ public class VehicleHelper {
         // Return already sorted list:
         return highestRated;
     }
+
+    /**
+     * @param vehicle The vehicle to calculate the score for.
+     * @return Integer score based on transmission type and air conditioning:
+     *      Automatic transmission scores 5.
+     *      Manual transmission scores 1.
+     *      Air conditioning scores 2.
+     */
+    public int calculateScore(Vehicle vehicle) {
+        int score = 0;
+        String sipp = vehicle.getSipp();
+        // If the transmission is automatic, increment the score by 5.
+        if (sipp.charAt(2) == 'A') { score += 5; }
+        // If the transmission is manual, increment the score by 1.
+        else score += 1;
+        // If the vehicle has air conditioning, increment the score by 2.
+        if (sipp.charAt(3) == 'R') { score += 2; }
+        return score;
+    }
 }
