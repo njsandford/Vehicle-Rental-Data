@@ -3,7 +3,6 @@ package run;
 import utilities.ParseFile;
 import utilities.VehicleHelper;
 import vehicles.Vehicle;
-import vehicles.VehicleSpecification;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,14 +47,10 @@ public class PrintToConsole {
      *      {name} - {sipp} - {type} - {doors} - {transmission} - {fuel} - {air con}
      */
     public void vehicleSpecifications(List<Vehicle> vehicleList) {
-        VehicleHelper vehicleHelper = new VehicleHelper();
-        VehicleSpecification spec;
-
         System.out.println("--- Full specification of all vehicles: ---");
         for (Vehicle vehicle : vehicleList) {
-            spec = vehicleHelper.getVehicleSpecification(vehicle);
-            System.out.println(vehicle.getName() + " - " + vehicle.getSipp() + " - " + spec.getCarType() + " - " +
-                    spec.getDoors() + " - " + spec.getTransmission() + " - " + spec.getFuel() + " - " + spec.getAirCon());
+            System.out.println(vehicle.getName() + " - " + vehicle.getSipp() + " - " + vehicle.getCarType() + " - " +
+                    vehicle.getDoors() + " - " + vehicle.getTransmission() + " - " + vehicle.getFuel() + " - " + vehicle.getAirCon());
         }
         System.out.println("--- End of specifications ---");
     }
@@ -70,8 +65,7 @@ public class PrintToConsole {
 
         System.out.println("--- Highest rated supplier per car type, descending order: ---");
         for (Vehicle vehicle : vehicles) {
-            VehicleSpecification spec = vehicleHelper.getVehicleSpecification(vehicle);
-            System.out.println(vehicle.getName() + " - " + spec.getCarType() + " - " + vehicle.getSupplier() + " - " + vehicle.getRating());
+            System.out.println(vehicle.getName() + " - " + vehicle.getCarType() + " - " + vehicle.getSupplier() + " - " + vehicle.getRating());
         }
         System.out.println("--- End of highest rated suppliers per car type ---");
     }

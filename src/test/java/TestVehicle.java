@@ -185,4 +185,14 @@ public class TestVehicle {
             previousScore = currentScore;
         }
     }
+    @Test
+    public void shouldSetCorrectVehicleSpecificationValues() {
+        Vehicle vehicle = new Vehicle("CDMR", "Ford Focus", 157.85, "Hertz", 8.9);
+        Assert.assertEquals("Compact", vehicle.getCarType());
+        Assert.assertEquals("5 doors", vehicle.getDoors());
+        Assert.assertEquals("Manual", vehicle.getTransmission());
+        Assert.assertEquals("Petrol", vehicle.getFuel());
+        Assert.assertEquals("AC", vehicle.getAirCon());
+    }
+
 }

@@ -41,9 +41,23 @@ public class Vehicle {
         setPrice(price);
         setSupplier(supplier);
         setRating(rating);
+        // Set vehicle specification fields:
+        setVehicleSpecification();
         // Calculate vehicle scores now that the core fields are populated:
         setScore();
         setTotalScore();
+    }
+
+    /**
+     * Set the vehicle specification fields from the four character SIPP code.
+     */
+    private void setVehicleSpecification() {
+        if (getSipp().length() >= 4) {
+            setType(getSippChar(0));
+            setDoors(getSippChar(1));
+            setTransmission(getSippChar(2));
+            setFuelAndAirCon(getSippChar(3));
+        }
     }
 
     /**
@@ -95,7 +109,7 @@ public class Vehicle {
             double lhsPrice = lhs.getPrice();
             double rhsPrice = rhs.getPrice();
 
-            // Ascending order
+            // Ascending order (multiply by 10 to ensure decimal value is not lost when converted to integer).
             return (int) (lhsPrice - rhsPrice);
         }
     };
@@ -137,7 +151,7 @@ public class Vehicle {
             double lhsRating = lhs.getRating();
             double rhsRating = rhs.getRating();
 
-            // Descending order
+            // Descending order (multiply by 10 to ensure decimal value is not lost when converted to integer).
             return (int) ((rhsRating - lhsRating) * 10);
         }
     };
@@ -178,8 +192,7 @@ public class Vehicle {
     }
 
     /**
-     * Obtain a specific character of the SIPP code, e.g. the 3rd character which represents transmission is at index 2.
-     * @param index the index of the SIPP character to return.
+     * @param index the index of the SIPP character to return e.g. the 3rd character which represents transmission is at index 2.
      * @return the character at the corresponding index.
      */
     private char getSippChar(int index) {
@@ -285,5 +298,148 @@ public class Vehicle {
      */
     public double getTotalScore() {
         return totalScore;
+    }
+
+
+    /**
+     * @param typeChar Corresponding letter from the SIPP code that represents car type.
+     */
+    private void setType(char typeChar) {
+        try {
+            this.carType = CarType.valueOf(Character.toString(typeChar)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.carType = "Unknown";
+        }
+    }
+
+    public String getCarType() {
+        return carType;
+    }
+
+    /**
+     * @param doorChar Corresponding letter from the SIPP code that represents doors/car type.
+     */
+    private void setDoors(char doorChar) {
+        try {
+            this.doors = Doors.valueOf(Character.toString(doorChar)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.doors = "Unknown";
+        }
+    }
+
+    public String getDoors() {
+        return doors;
+    }
+
+    /**
+     * @param transmissionChar Corresponding letter from the SIPP code that represents transmission.
+     */
+    private void setTransmission(char transmissionChar) {
+        try {
+            this.transmission = Transmission.valueOf(Character.toString(transmissionChar)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.transmission = "Unknown";
+        }
+    }
+
+    public String getTransmission() {
+        return transmission;
+    }
+
+    /**
+     * @param fuelAndAirCon Corresponding letter from the SIPP code that represents fuel/air con.
+     */
+    private void setFuelAndAirCon(char fuelAndAirCon) {
+        try {
+            this.fuel = Fuel.valueOf(Character.toString(fuelAndAirCon)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.fuel = "Unknown";
+        }
+        try {
+            this.airCon = AirCon.valueOf(Character.toString(fuelAndAirCon)).getValue();
+        } catch (IllegalArgumentException e) {
+            this.airCon = "Unknown";
+        }
+    }
+
+    public String getFuel() {
+        return fuel;
+    }
+
+    public String getAirCon() {
+        return airCon;
+    }
+
+
+    /**  Enums for calculating Vehicle Specification  **/
+
+    public enum CarType {
+        M("Mini"), E("Economy"), C("Compact"), I("Intermediate"), S("Standard"), F("Full size"), P("Premium"), L("Luxury"), X("Special");
+
+        private final String value;
+
+        CarType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+
+    public enum Doors {
+        B("2 doors"), C("4 doors"), D("5 doors"), W("Estate"), T("Convertible"), F("SUV"), P("Pick up"), V("Passenger Van");
+
+        private final String value;
+
+        Doors(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+
+    public enum Transmission {
+        M("Manual"), A("Automatic");
+
+        private final String value;
+
+        Transmission(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+
+    public enum Fuel {
+        N("Petrol"), R("Petrol");
+
+        private final String value;
+
+        Fuel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+
+    public enum AirCon {
+        N("No AC"), R("AC");
+
+        private final String value;
+
+        AirCon(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
     }
 }
