@@ -9,9 +9,23 @@ import java.util.Comparator;
  */
 public class Vehicle {
 
-    // Private class variables
-    private String sipp, name, supplier;
-    private double price, rating;
+    // Core class variables:
+    private String sipp;
+    private String name;
+    private String supplier;
+    private double price;
+    private double rating;
+
+    // Vehicle specification variables:
+    private String carType;
+    private String doors;
+    private String transmission;
+    private String fuel;
+    private String airCon;
+
+    // Vehicle scores:
+    private int score;
+    private double totalScore;
 
     /**
      * @param sipp Four letter SIPP code.
@@ -21,11 +35,15 @@ public class Vehicle {
      * @param rating Supplier's rating out of 10.
      */
     public Vehicle(String sipp, String name, double price, String supplier, double rating) {
+        // Populate the core fields:
         setSipp(sipp);
         setName(name);
         setPrice(price);
         setSupplier(supplier);
         setRating(rating);
+        // Calculate vehicle scores now that the core fields are populated:
+        setScore();
+        setTotalScore();
     }
 
     /**
@@ -124,12 +142,48 @@ public class Vehicle {
         }
     };
 
+    /**
+     * Comparator to order Vehicle objects by total score in ascending order.
+     */
+    public static Comparator<Vehicle> TotalScoreAscending = new Comparator<Vehicle>() {
+
+        public int compare(Vehicle lhs, Vehicle rhs) {
+            double lhsScore = lhs.getTotalScore();
+            double rhsScore = rhs.getTotalScore();
+
+            // Ascending order (multiply by 10 to ensure decimal value is not lost when converted to integer).
+            return (int) ((lhsScore - rhsScore) * 10);
+        }
+    };
+
+    /**
+     * Comparator to order Vehicle objects by total score in descending order.
+     */
+    public static Comparator<Vehicle> TotalScoreDescending = new Comparator<Vehicle>() {
+
+        public int compare(Vehicle lhs, Vehicle rhs) {
+            double lhsScore = lhs.getTotalScore();
+            double rhsScore = rhs.getTotalScore();
+
+            // Descending order (multiply by 10 to ensure decimal value is not lost when converted to integer).
+            return (int) ((rhsScore - lhsScore) * 10);
+        }
+    };
 
     /**
      * @return Four letter SIPP code.
      */
     public String getSipp() {
         return this.sipp;
+    }
+
+    /**
+     * Obtain a specific character of the SIPP code, e.g. the 3rd character which represents transmission is at index 2.
+     * @param index the index of the SIPP character to return.
+     * @return the character at the corresponding index.
+     */
+    private char getSippChar(int index) {
+        return this.sipp.charAt(index);
     }
 
     /**
@@ -193,5 +247,43 @@ public class Vehicle {
      */
     private void setRating(double rating) {
         this.rating = rating;
+    }
+
+    /**
+     * Calculates the vehicle score based on transmission type and air conditioning:
+     *      Automatic transmission scores 5.
+     *      Manual transmission scores 1.
+     *      Air conditioning scores 2.
+     */
+    private void setScore() {
+        int score = 0;
+        // If the transmission is automatic, increment the score by 5.
+        if (getSippChar(2) == 'A') { score += 5; }
+        // If the transmission is manual, increment the score by 1.
+        else score += 1;
+        // If the vehicle has air conditioning, increment the score by 2.
+        if (getSippChar(3) == 'R') { score += 2; }
+        this.score = score;
+    }
+
+    /**
+     * @return The calculated vehicle score based on transmission type and air conditioning.
+     */
+    public int getScore() {
+        return this.score;
+    }
+
+    /**
+     * Calculate the total score based on vehicle score and rating.
+     */
+    private void setTotalScore() {
+        this.totalScore = getScore() + getRating();
+    }
+
+    /**
+     * @return The total score based on vehicle score and rating.
+     */
+    public double getTotalScore() {
+        return totalScore;
     }
 }

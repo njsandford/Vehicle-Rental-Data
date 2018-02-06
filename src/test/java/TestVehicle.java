@@ -136,4 +136,53 @@ public class TestVehicle {
             previousRating = currentRating;
         }
     }
+
+    @Test
+    public void calculatesCorrectVehicleScore() {
+        Vehicle vehicleOne = new Vehicle("CDMR", "Ford Focus", 157.85, "Hertz", 8.9);
+        Vehicle vehicleTwo = new Vehicle("CDAR", "Skoda Fabia", 219.71, "Sixt", 8.2);
+        Vehicle vehicleThree = new Vehicle("MBMN", "Kia Picanto", 136.57, "Hertz", 8.9);
+
+        int scoreOne = vehicleOne.getScore();
+        int scoreTwo = vehicleTwo.getScore();
+        int scoreThree = vehicleThree.getScore();
+
+        Assert.assertEquals(3, scoreOne);
+        Assert.assertEquals(7, scoreTwo);
+        Assert.assertEquals(1, scoreThree);
+    }
+
+    @Test
+    public void shouldGetScoresInDescendingOrder() {
+        ParseFile parseFile = new ParseFile();
+        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+        Collections.sort(vehicleList, Vehicle.TotalScoreDescending);
+
+        double previousScore = 100;
+        double currentScore;
+
+        // Assert true that for every vehicle score, the current score is less than or equal to the previous score.
+        for (Vehicle vehicle : vehicleList) {
+            currentScore = vehicle.getTotalScore();
+            Assert.assertTrue(currentScore <= previousScore);
+            previousScore = currentScore;
+        }
+    }
+
+    @Test
+    public void shouldGetScoresInAscendingOrder() {
+        ParseFile parseFile = new ParseFile();
+        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+        Collections.sort(vehicleList, Vehicle.TotalScoreAscending);
+
+        double previousScore = 0;
+        double currentScore;
+
+        // Assert true that for every vehicle score, the current score is greater than or equal to the previous score.
+        for (Vehicle vehicle : vehicleList) {
+            currentScore = vehicle.getTotalScore();
+            Assert.assertTrue(currentScore >= previousScore);
+            previousScore = currentScore;
+        }
+    }
 }

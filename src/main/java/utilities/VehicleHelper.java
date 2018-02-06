@@ -1,7 +1,6 @@
 package utilities;
 
 import vehicles.Vehicle;
-import vehicles.VehicleScore;
 import vehicles.VehicleSpecification;
 
 import java.util.*;
@@ -47,65 +46,24 @@ public class VehicleHelper {
     }
 
     /**
-     * @param vehicle The vehicle to calculate the score for.
-     * @return Integer score based on transmission type and air conditioning:
-     *      Automatic transmission scores 5.
-     *      Manual transmission scores 1.
-     *      Air conditioning scores 2.
+     * @param vehicleList List of all vehicles to sort by score.
+     * @return List of Vehicle objects sorted in descending order by score.
      */
-    public int calculateScore(Vehicle vehicle) {
-        int score = 0;
-        String sipp = vehicle.getSipp();
-        // If the transmission is automatic, increment the score by 5.
-        if (sipp.charAt(2) == 'A') { score += 5; }
-        // If the transmission is manual, increment the score by 1.
-        else score += 1;
-        // If the vehicle has air conditioning, increment the score by 2.
-        if (sipp.charAt(3) == 'R') { score += 2; }
-        return score;
-    }
-
-    /**
-     * @param vehicleList List of all vehicles to calculate score for.
-     * @return List of VehicleScore objects.
-     */
-    public List<VehicleScore> getVehicleScores(List<Vehicle> vehicleList) {
-        List<VehicleScore> scores = new ArrayList<VehicleScore>();
-
-        VehicleScore vehicleScore;
-        for (Vehicle vehicle : vehicleList) {
-            int score = calculateScore(vehicle);
-            double totalScore = score + vehicle.getRating();
-            vehicleScore = new VehicleScore(vehicle, score, totalScore);
-            scores.add(vehicleScore);
-        }
-
-        return scores;
-    }
-
-    /**
-     * @param vehicleList List of all vehicles to calculate score for.
-     * @return List of VehicleScore objects sorted in descending order.
-     */
-    public List<VehicleScore> getVehicleScoresDescending(List<Vehicle> vehicleList) {
-        List<VehicleScore> scores = getVehicleScores(vehicleList);
-
+    public List<Vehicle> getVehiclesByScoreDescending(List<Vehicle> vehicleList) {
         // Sort by total score descending:
-        Collections.sort(scores, VehicleScore.TotalScoreDescending);
+        Collections.sort(vehicleList, Vehicle.TotalScoreDescending);
 
-        return scores;
+        return vehicleList;
     }
 
     /**
-     * @param vehicleList List of all vehicles to calculate score for.
-     * @return List of VehicleScore objects sorted in ascending order.
+     * @param vehicleList List of all vehicles to sort by score.
+     * @return List of Vehicle objects sorted in ascending order by score.
      */
-    public List<VehicleScore> getVehicleScoresAscending(List<Vehicle> vehicleList) {
-        List<VehicleScore> scores = getVehicleScores(vehicleList);
-
+    public List<Vehicle> getVehiclesByScoreAscending(List<Vehicle> vehicleList) {
         // Sort by total score ascending:
-        Collections.sort(scores, VehicleScore.TotalScoreAscending);
+        Collections.sort(vehicleList, Vehicle.TotalScoreAscending);
 
-        return scores;
+        return vehicleList;
     }
 }

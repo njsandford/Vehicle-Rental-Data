@@ -3,10 +3,8 @@ package run;
 import utilities.ParseFile;
 import utilities.VehicleHelper;
 import vehicles.Vehicle;
-import vehicles.VehicleScore;
 import vehicles.VehicleSpecification;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -84,12 +82,11 @@ public class PrintToConsole {
      */
     public void vehicleScoresDescending(List<Vehicle> vehicleList) {
         VehicleHelper vehicleHelper = new VehicleHelper();
-        List<VehicleScore> scores = vehicleHelper.getVehicleScoresDescending(vehicleList);
+        List<Vehicle> sortedVehicles = vehicleHelper.getVehiclesByScoreDescending(vehicleList);
 
         System.out.println("--- Vehicle Scores: ---");
-        for (VehicleScore score : scores) {
-            Vehicle vehicle = score.getVehicle();
-            System.out.println(vehicle.getName() + " - " + score.getScore() + " - " + vehicle.getRating() + " - " + score.getTotalScore());
+        for (Vehicle vehicle : sortedVehicles) {
+            System.out.println(vehicle.getName() + " - " + vehicle.getScore() + " - " + vehicle.getRating() + " - " + vehicle.getTotalScore());
         }
         System.out.println("--- End of scores ---");
     }
