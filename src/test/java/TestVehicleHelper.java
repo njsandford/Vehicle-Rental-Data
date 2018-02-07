@@ -22,25 +22,44 @@ public class TestVehicleHelper {
         Assert.assertEquals(6, vehicles.size());
     }
 
-//    @Test
-//    public void calculatesCorrectVehicleScore() {
-//        Vehicle vehicleOne = new Vehicle("CDMR", "Ford Focus", 157.85, "Hertz", 8.9);
-//        Vehicle vehicleTwo = new Vehicle("CDAR", "Skoda Fabia", 219.71, "Sixt", 8.2);
-//        Vehicle vehicleThree = new Vehicle("MBMN", "Kia Picanto", 136.57, "Hertz", 8.9);
-//
-//        VehicleHelper vehicleHelper = new VehicleHelper();
-//
-//        int scoreOne = vehicleHelper.calculateScore(vehicleOne);
-//        int scoreTwo = vehicleHelper.calculateScore(vehicleTwo);
-//        int scoreThree = vehicleHelper.calculateScore(vehicleThree);
-//
-//        Assert.assertEquals(3, scoreOne);
-//        Assert.assertEquals(7, scoreTwo);
-//        Assert.assertEquals(1, scoreThree);
-//    }
+    @Test
+    public void shouldGetVehiclesByPriceInDescendingOrder() {
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        ParseFile parseFile = new ParseFile();
+        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+        List<Vehicle> sortedVehicles = vehicleHelper.getVehiclesByPriceDescending(vehicleList);
+
+        double previousPrice = 1000;
+        double currentPrice;
+
+        // Assert true that for every vehicle score, the current score is less than or equal to the previous score.
+        for (Vehicle vehicle : sortedVehicles) {
+            currentPrice = vehicle.getPrice();
+            Assert.assertTrue(currentPrice <= previousPrice);
+            previousPrice = currentPrice;
+        }
+    }
 
     @Test
-    public void shouldGetScoresInDescendingOrder() {
+    public void shouldGetVehiclesByPriceInAscendingOrder() {
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        ParseFile parseFile = new ParseFile();
+        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
+        List<Vehicle> sortedVehicles = vehicleHelper.getVehiclesByPriceAscending(vehicleList);
+
+        double previousPrice = 0;
+        double currentPrice;
+
+        // Assert true that for every vehicle score, the current score is greater than or equal to the previous score.
+        for (Vehicle vehicle : sortedVehicles) {
+            currentPrice = vehicle.getPrice();
+            Assert.assertTrue(currentPrice >= previousPrice);
+            previousPrice = currentPrice;
+        }
+    }
+
+    @Test
+    public void shouldGetVehiclesByScoreInDescendingOrder() {
         VehicleHelper vehicleHelper = new VehicleHelper();
         ParseFile parseFile = new ParseFile();
         List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
@@ -58,7 +77,7 @@ public class TestVehicleHelper {
     }
 
     @Test
-    public void shouldGetScoresInAscendingOrder() {
+    public void shouldGetVehiclesByScoreInAscendingOrder() {
         VehicleHelper vehicleHelper = new VehicleHelper();
         ParseFile parseFile = new ParseFile();
         List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");

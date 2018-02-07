@@ -33,10 +33,11 @@ public class PrintToConsole {
      *      {name} - {price}
      */
     public void vehiclesPriceAscending(List<Vehicle> vehicleList) {
-        Collections.sort(vehicleList, Vehicle.PriceAscending);
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        List<Vehicle> sortedVehicles = vehicleHelper.getVehiclesByPriceAscending(vehicleList);
 
         System.out.println("--- All vehicles in ascending price order: ---");
-        for (Vehicle vehicle : vehicleList) {
+        for (Vehicle vehicle : sortedVehicles) {
             System.out.println(vehicle.getName() + " - " + vehicle.getPrice());
         }
         System.out.println("--- End of vehicles ---");

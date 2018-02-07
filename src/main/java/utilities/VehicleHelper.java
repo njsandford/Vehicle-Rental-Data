@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * @Author: Natalie Sandford
  * @Date: 03/02/2018
- * Provides functionality to get information from Vehicle objects, such as extracting specification information from SIPP codes.
+ * Provides additional functionality for Vehicle objects, such as obtaining sorted lists of vehicles.
  */
 public class VehicleHelper {
 
@@ -34,6 +34,28 @@ public class VehicleHelper {
         }
         // Return already sorted list:
         return highestRated;
+    }
+
+    /**
+     * @param vehicleList List of all vehicles to sort by price.
+     * @return List of Vehicle objects sorted in descending order by price.
+     */
+    public List<Vehicle> getVehiclesByPriceDescending(List<Vehicle> vehicleList) {
+        // Sort by price descending:
+        Collections.sort(vehicleList, Vehicle.PriceDescending);
+
+        return vehicleList;
+    }
+
+    /**
+     * @param vehicleList List of all vehicles to sort by price.
+     * @return List of Vehicle objects sorted in ascending order by price.
+     */
+    public List<Vehicle> getVehiclesByPriceAscending(List<Vehicle> vehicleList) {
+        // Sort by price ascending:
+        Collections.sort(vehicleList, Vehicle.PriceAscending);
+
+        return vehicleList;
     }
 
     /**
