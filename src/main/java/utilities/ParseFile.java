@@ -17,11 +17,6 @@ public class ParseFile {
 
     private static final String FILE_PATH = "./data/";
 
-//    public static void main(String[] args) {
-//        ParseFile pf = new ParseFile();
-//        pf.jsonToVehicleList("vehicles.json");
-//    }
-
     /**
      * Produces an ArrayList of Vehicle objects from a JSON file.
      * @param filename name of the JSON file containing vehicle data.
@@ -47,12 +42,15 @@ public class ParseFile {
 
             // Using GSON, iterate through the JsonArray of vehicle data, storing each element as a Vehicle in an ArrayList.
             Gson gson = new Gson();
+            Vehicle vehicle;
+            Vehicle finalVehicle;
             // For each element in the JSON vehicle list, create a new Vehicle object and add it to the Vehicle List.
             for (JsonElement element : vehicles) {
-                Vehicle vehicle = gson.fromJson(element, Vehicle.class);
-                vehicleList.add(vehicle);
+                vehicle = gson.fromJson(element, Vehicle.class);
+                // Need to obtain the values of the object to build the Vehicle using the constructor so that other fields are populated.
+                finalVehicle = new Vehicle(vehicle.getSipp(), vehicle.getName(), vehicle.getPrice(), vehicle.getSupplier(), vehicle.getRating());
+                vehicleList.add(finalVehicle);
             }
-            //System.out.println(vehicleList);
 
         } catch (IOException e) {
             throw new RuntimeException("Should not happen; file is known to exist", e);
