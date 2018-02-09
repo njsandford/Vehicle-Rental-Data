@@ -3,8 +3,6 @@ package run;
 import utilities.ParseFile;
 import utilities.VehicleHelper;
 import vehicles.Vehicle;
-
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,8 +11,6 @@ import java.util.List;
  * Provides a method of printing vehicle data to the console.
  */
 public class PrintToConsole {
-
-    private ParseFile parseFile = new ParseFile();
 
     public static void main(String[] args) {
         PrintToConsole printToConsole = new PrintToConsole();

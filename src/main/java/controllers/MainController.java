@@ -1,5 +1,7 @@
 package controllers;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
@@ -8,7 +10,6 @@ import utilities.ParseFile;
 import utilities.VehicleHelper;
 import vehicles.Vehicle;
 
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -20,78 +21,94 @@ public class MainController {
         return "Vehicle Rental Application";
     }
 
-    @RequestMapping("/PriceAscending")
-    @ResponseBody
-    public String priceAscending() {
+    /**
+     * @return Json string of all vehicles ordered by price in ascending order.
+     */
+    @RequestMapping(value = "/PriceAscending", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<String> priceAscending() {
         ParseFile parseFile = new ParseFile();
-        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
-        Collections.sort(vehicleList, Vehicle.PriceAscending);
-        String content = "";
-        for (Vehicle vehicle : vehicleList) {
-            content += "<p>" + vehicle.getName() + " - " + vehicle.getPrice() + "</p>";
-        }
-        return content;
-    }
-
-    @RequestMapping("/VehicleSpecifications")
-    @ResponseBody
-    public String vehicleSpecifications() {
-        ParseFile parseFile = new ParseFile();
-        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
-
-        String content = "";
-
-        for (Vehicle vehicle : vehicleList) {
-            content += "<p>" + vehicle.getName() + " - " + vehicle.getSipp() + " - " + vehicle.getCarType() + " - " +
-                    vehicle.getDoors() + " - " + vehicle.getTransmission() + " - " + vehicle.getFuel() + " - " + vehicle.getAirCon() + "</p>";
-        }
-
-        return content;
-    }
-
-    @RequestMapping("/HighestRated")
-    @ResponseBody
-    public String highestRated() {
-        ParseFile parseFile = new ParseFile();
-        List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
-
         VehicleHelper vehicleHelper = new VehicleHelper();
-        List<Vehicle> vehicles = vehicleHelper.getHighestRatedPerCarTypeDescending(vehicleList);
+        List<Vehicle> vehicleList = vehicleHelper.getVehiclesByPriceAscending(parseFile.jsonToVehicleList("vehicles.json"));
 
-        String content = "";
-
-        for (Vehicle vehicle : vehicles) {
-            content += "<p>" + vehicle.getName() + " - " + vehicle.getCarType() + " - " + vehicle.getSupplier() + " - " + vehicle.getRating() + "</p>";
+        JsonObject vehicleObject;
+        JsonArray vehicles = new JsonArray();
+        for (Vehicle vehicle : vehicleList) {
+            vehicleObject = new JsonObject();
+            vehicleObject.addProperty("name", vehicle.getName());
+            vehicleObject.addProperty("price", vehicle.getPrice());
+            vehicles.add(vehicleObject);
         }
-        return content;
+        return new ResponseEntity<String>(vehicles.toString(), HttpStatus.OK);
     }
 
-
-    @RequestMapping("/VehicleScores")
-    @ResponseBody
-    public String vehicleScores() {
+    /**
+     * @return Json string of all vehicle specifications.
+     */
+    @RequestMapping(value = "/VehicleSpecifications", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<String> vehicleSpecifications() {
         ParseFile parseFile = new ParseFile();
         List<Vehicle> vehicleList = parseFile.jsonToVehicleList("vehicles.json");
 
-        VehicleHelper vehicleHelper = new VehicleHelper();
-        List<Vehicle> vehicles = vehicleHelper.getVehiclesByScoreDescending(vehicleList);
-
-        String content = "";
-
-        for (Vehicle vehicle : vehicles) {
-            content += "<p>" + vehicle.getName() + " - " + vehicle.getScore() + " - " + vehicle.getRating() + " - " + vehicle.getTotalScore() + "</p>";
+        JsonObject vehicleObject;
+        JsonArray vehicles = new JsonArray();
+        for (Vehicle vehicle : vehicleList) {
+            vehicleObject = new JsonObject();
+            vehicleObject.addProperty("name", vehicle.getName());
+            vehicleObject.addProperty("sipp", vehicle.getSipp());
+            vehicleObject.addProperty("carType", vehicle.getCarType());
+            vehicleObject.addProperty("doors", vehicle.getDoors());
+            vehicleObject.addProperty("transmission", vehicle.getTransmission());
+            vehicleObject.addProperty("fuel", vehicle.getFuel());
+            vehicleObject.addProperty("airCon", vehicle.getAirCon());
+            vehicles.add(vehicleObject);
         }
-        return content;
+        return new ResponseEntity<String>(vehicles.toString(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/vehicle/", method = RequestMethod.GET)
-    public ResponseEntity<List<Vehicle>> listAllUsers() {
+    /**
+     * @return Json string of the highest rated supplier for each vehicle type, sorted by rating descending.
+     */
+    @RequestMapping(value = "/HighestRated", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<String> highestRated() {
         ParseFile parseFile = new ParseFile();
-        List<Vehicle> vehicles = parseFile.jsonToVehicleList("vehicles.json");
-        if (vehicles.isEmpty()) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-            // You many decide to return HttpStatus.NOT_FOUND
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        List<Vehicle> vehicleList = vehicleHelper.getHighestRatedPerCarTypeDescending(parseFile.jsonToVehicleList("vehicles.json"));
+
+        JsonObject vehicleObject;
+        JsonArray vehicles = new JsonArray();
+        for (Vehicle vehicle : vehicleList) {
+            vehicleObject = new JsonObject();
+            vehicleObject.addProperty("name", vehicle.getName());
+            vehicleObject.addProperty("carType", vehicle.getCarType());
+            vehicleObject.addProperty("supplier", vehicle.getSupplier());
+            vehicleObject.addProperty("rating", vehicle.getRating());
+            vehicles.add(vehicleObject);
         }
-        return new ResponseEntity<List<Vehicle>>(vehicles, HttpStatus.OK);
+
+        return new ResponseEntity<String>(vehicles.toString(), HttpStatus.OK);
+    }
+
+
+    /**
+     * @return Json string of all vehicles and corresponding scores, ordered by total score descending.
+     */
+    @RequestMapping(value = "/VehicleScores", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<String> vehicleScores() {
+        ParseFile parseFile = new ParseFile();
+        VehicleHelper vehicleHelper = new VehicleHelper();
+        List<Vehicle> vehicleList = vehicleHelper.getVehiclesByScoreDescending(parseFile.jsonToVehicleList("vehicles.json"));
+
+        JsonObject vehicleObject;
+        JsonArray vehicles = new JsonArray();
+        for (Vehicle vehicle : vehicleList) {
+            vehicleObject = new JsonObject();
+            vehicleObject.addProperty("name", vehicle.getName());
+            vehicleObject.addProperty("score", vehicle.getScore());
+            vehicleObject.addProperty("rating", vehicle.getRating());
+            vehicleObject.addProperty("totalScore", vehicle.getTotalScore());
+            vehicles.add(vehicleObject);
+        }
+
+        return new ResponseEntity<String>(vehicles.toString(), HttpStatus.OK);
     }
 }
